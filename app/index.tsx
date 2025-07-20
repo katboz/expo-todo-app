@@ -49,13 +49,17 @@ export default function Index() {
 
     const [todos, setTodos] = useState<ToDoType[]>([]);
     const [todoText, setTodoText] = useState<string>('');
+    const [searchQuery, setSearcQuery] = useState<string>("");
+    const [oldTodos, setOldTodos] = useState<ToDoType[]>([]);
+
 
     useEffect(() => {
       const getTodos = async() =>{
         try{
           const todos = await AsyncStorage.getItem('my-todo');
           if(todos !== null){
-            setTodos(JSON.parse(todos))
+            setTodos(JSON.parse(todos));
+            setOldTodos(JSON.parse(todos));
           }
         } catch(error){
           console.log(error);
@@ -75,6 +79,7 @@ export default function Index() {
 
       todos.push(newTodo);
       setTodos(todos);
+      setOldTodos(todos);
       await AsyncStorage.setItem('my-todo', JSON.stringify(todos) );
       setTodoText('');
       Keyboard.dismiss
@@ -89,6 +94,7 @@ export default function Index() {
         const newTodos= todos.filter((todo) => todo.id !== id);
         await AsyncStorage.setItem('my-todo', JSON.stringify(newTodos));
         setTodos(newTodos);
+        setOldTodos(newTodos)
       } catch(error){
         console.log(error);
       }
@@ -104,11 +110,26 @@ export default function Index() {
         });
         await AsyncStorage.setItem('my-todo', JSON.stringify(newTodos));
         setTodos(newTodos);
+        setOldTodos(newTodos);
       } catch(error){
         console.log(error)
       }
-
     }
+
+    const onSearch =(query:string) =>{
+      if (query == ''){
+        setTodos(oldTodos);
+      } else {
+        const filteredTodos = todos.filter((todo)=>
+        todo.title.toLowerCase().includes(query.toLowerCase())
+        );
+        setTodos(filteredTodos);
+      }
+    };
+    
+    useEffect(() => {
+      onSearch(searchQuery);
+    }, [searchQuery]);
 
 
   return (
@@ -125,7 +146,10 @@ export default function Index() {
 
       <View style={styles.searchBar}>
         <Ionicons name='search' size={24} color={'#333'}/>
-        <TextInput placeholder='Search'
+        <TextInput
+        placeholder='Search'
+        value={searchQuery}
+        onChangeText={(text)=> setSearcQuery(text)}
         style={styles.searchInput}
         clearButtonMode='always'
         />
