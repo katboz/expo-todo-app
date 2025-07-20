@@ -1,8 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Checkbox } from 'expo-checkbox';
 import { useState } from 'react';
-import { FlatList, Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+
 
 type ToDoType = {
   id:number;
@@ -46,15 +49,23 @@ export default function Index() {
 
     const [todos, setTodos] = useState<ToDoType[]>(todoData);
     const [todoText, setTodoText] = useState<string>('');
-    const addTodo = ()=>{
+    const addTodo = async()=>{
+      try{
       const newTodo ={
         id: Math.random(),
         title: todoText,
         isDone: false,
       };
+
       todos.push(newTodo);
       setTodos(todos);
+      await AsyncStorage.setItem('my-todo', JSON.stringify(todos) );
       setTodoText('');
+      Keyboard.dismiss
+    }
+    catch(error){
+      console.log(error)
+    }
     }
 
 
