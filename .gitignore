@@ -1,10 +1,9 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
 # dependencies
 node_modules/
 
 # Expo
 .expo/
+.expo-shared/
 dist/
 web-build/
 expo-env.d.ts
@@ -20,20 +19,32 @@ expo-env.d.ts
 
 # Metro
 .metro-health-check*
+.metro-cache/
 
-# debug
+# debug & logs
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+*.log
 
 # macOS
 .DS_Store
 *.pem
 
-# local env files
+# Local env files
+.env
+.env.*
 .env*.local
 
 # typescript
 *.tsbuildinfo
 
+# Editor settings
+.vscode/
+
+# Firebase / Google Services (optional, if used)
+google-services.json
+GoogleService-Info.plist
+
+# Example app (if needed)
 app-example
