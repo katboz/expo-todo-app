@@ -20,6 +20,9 @@ You can:
 
 ---
 
+Screenshot from Web if you don!t want to instal XCode
+![App Screenshot](./assets/images/Screen%20Shot%202025-07-20%20at%2023.39.11.png)
+
 ## 🛠️ Tech Stack
 
 - **React Native**
